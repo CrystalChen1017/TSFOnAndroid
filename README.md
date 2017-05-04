@@ -1,9 +1,9 @@
-# tensorflow 几个android demo源码环境搭建
+# 将tensorflow训练好的模型移植到android上
 
 
 ## 说明
 本文将描述如何将一个训练好的模型植入到android设备上，并且在android设备上输入待处理数据，通过模型，获取输出数据。
-通过一个例子，讲述整个移植的过程。
+通过一个例子，讲述整个移植的过程。（demo的源码访问github上了https://github.com/CrystalChen1017/TSFOnAndroid）
 整体的思路如下：
 1. 使用python在PC上训练好你的模型，保存为pb文件
 2. 新建android project，把pb文件放到assets文件夹下
@@ -11,11 +11,15 @@
 4. 加载库文件，让tensorflow在app中运行起来
 
 ### 准备
-1. tensorflow的环境
+1. tensorflow的环境，参阅http://blog.csdn.net/cxq234843654/article/details/70857562
 2. libtensorflow_inference.so
 3. libandroid_tensorflow_inference_java.jar
-4. 如果要自己编译得到以上两个文件，需要安装bazel
+4. 如果要自己编译得到以上两个文件，需要安装bazel。参阅http://blog.csdn.net/cxq234843654/article/details/70861155的第2步
 
+以上两个文件通过以下两个网址进行下载：
+https://github.com/CrystalChen1017/TSFOnAndroid/tree/master/app/libs
+或者
+http://download.csdn.net/detail/cxq234843654/9833372
 
 ### PC端模型的准备
 这是一个很简单的模型，输入是一个数组matrix1，经过操作后，得到这个数组乘以2*matrix1。
@@ -54,8 +58,29 @@ session.close()
 
 
 ### （可选的）bazel编译出so和jar文件
-如果希望自己通过tensorflow的源码编译出so和jar文件，需要进行如下操作：
+如果希望自己通过tensorflow的源码编译出so和jar文件，则需要通过终端进入到tensorflow的目录下，进行如下操作：
 
+1. 编译so库
+
+```bash
+bazel build -c opt //tensorflow/contrib/android:libtensorflow_inference.so \
+    -- crosstool_top=//external:android/crosstool \
+    -- host_crosstool_top=@bazel_tools//tools/cpp:toolchain \
+    -- cpu=armeabi-v7a
+```
+
+编译完毕后，libtensorflow_inference.so的路径为：    
+/tensorflow/bazel-bin/tensorflow/contrib/android
+
+2. 编译jar包
+
+```bash
+bazel build //tensorflow/contrib/android:android_tensorflow_inference_java
+
+```
+
+编译完毕后，android_tensorflow_inference_java.jar的路径为：    
+/tensorflow/bazel-bin/tensorflow/contrib/android
 
 
 ### android端的准备
