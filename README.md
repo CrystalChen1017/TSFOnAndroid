@@ -14,7 +14,7 @@
 1. tensorflow的环境，参阅http://blog.csdn.net/cxq234843654/article/details/70857562
 2. libtensorflow_inference.so
 3. libandroid_tensorflow_inference_java.jar
-4. 如果要自己编译得到以上两个文件，需要安装bazel。参阅http://blog.csdn.net/cxq234843654/article/details/70861155的第2步
+4. 如果要自己编译得到以上两个文件，需要安装bazel。参阅http://blog.csdn.net/cxq234843654/article/details/70861155 的第2步
 
 以上两个文件通过以下两个网址进行下载：
 https://github.com/CrystalChen1017/TSFOnAndroid/tree/master/app/libs
